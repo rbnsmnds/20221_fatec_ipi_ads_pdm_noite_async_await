@@ -1,6 +1,13 @@
 
 //importando o pacote dotenv
 require('dotenv').config()
+//conferir êxito da importação
+//console.log(process.env)
+
+// console.log(process.env.APPID)
+// const APPID = process.env.APPID
+// const PROTOCOL = process.env.PROTOCOL
+// const BASE_URL = process.env.BASE_URL
 
 //importando o pacote axios
 const axios = require('axios');
@@ -22,6 +29,7 @@ const axios = require('axios');
 /*endereço da requisição construído 
 com as constantes declaradas*/
 //const url = `${protocol}://${baseurl}?q=${q}&units=${units}&appid=${appid}&lang=${lang}&cnt=${cnt}`
+
 /*endereço da requisição utilizando 
 as variáveis declaradas no dotenv*/
 const { APPID, PROTOCOL, BASE_URL, UNITS, LANGUAGE, CNT, Q } = process.env
@@ -85,10 +93,10 @@ function fatorial(n) {
 function chamadaComThenCatch() {
     fatorial(5)
     .then((res) => console.log(res))
-    .catch((res) => console.log(res));
+    .catch((erro) => console.log(erro));
     fatorial(-1)
     .then((res) => console.log(res))
-    .catch((res) => console.log(res));
+    .catch((erro) => console.log(erro));
 }
 chamadaComThenCatch();
 
@@ -102,3 +110,88 @@ async function chamadaComAwait() {
     const f2 = await fatorial(-1);
     console.log(f2);
 }
+// chamadaComAwait()
+
+// Promises: ECMAScript 2015
+// async/await: ECMAScript 2017
+
+async function chamadaComAsyncAwait() {
+    try{
+        const f3 = await fatorial(10)
+        console.log(f3)
+        const f4 = await fatorial(-10)
+        console.log(f4)
+    }
+    catch (e){
+        console.log(e)
+    }
+}
+chamadaComAsyncAwait();
+
+// utilizando async arrow function
+const oi = async (nome) => {
+    return `Oi ${nome}`
+}
+
+// utilizando uma função simples com async
+// async function ola (nome){
+//     return `Olá, ${nome}`
+// }
+// const resultado = ola("Ana")
+// resultado.then (r => console.log(r))
+
+// utilizando uma função devolvendo uma promise
+// function ola (nome){
+//     return new Promise (function(resolve, reject){
+//         resolve [`Olá, ${nome}`]
+//     })
+// }
+// const resultado_dois = ola ("Pedro")
+// resultado_dois.then (res => console.log(res))
+
+// utilizando uma função simples
+function ola (nome){
+    return `Olá, ${nome}`
+}
+const resultado_um = ola ("João")
+console.log(resultado_um)
+
+// Tentativas de resolução de exercício
+
+axios.get(url)
+.then(res => {
+    console.log(res)
+    return res.data
+})
+.then(res => {
+    console.log(res.cnt)
+    return res
+})
+.then(res => {
+    console.log(res['list'])
+    return res['list']
+})
+.then(res => {
+    // para cada previsão na lista
+    res.forEach (elemento => {
+        console.log (new Date(+elemento.dt * 1000).toLocaleString)
+        // exibir a temperatura mínima
+        console.log (`Temperatura mínima: ${elemento.main.temp_min}`)
+        // exibir a temperatura máxima
+        console.log (`Temperatura máxima: ${elemento.main.temp_max}`)
+        // exibir a descrição
+        console.log (`Descrição: ${elemento.weather[0].description}`)
+    })
+})
+// .then(res => {
+//     // para cada previsão na lista
+//     for (let i = 0; i < res.length; i++){
+//         console.log (new Date(+(res[i].dt) + 1000).toLocaleString())
+//         // exibir a temperatura mínima
+//         console.log ("Temp min: " + res[i].main.temp_min)
+//         // exibir a temperatura máxima
+//         console.log ("Temp max: " + res[i]['main']['temp_min'])
+//         // exibir a descrição
+//         console.log ("Description: " + res[i].weather[0].description)
+//     }
+// })
